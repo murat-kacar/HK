@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { query } from '@/lib/db';
 import { slugify } from '@/lib/slugify';
 
+export const runtime = 'nodejs';
+
 type InstructorBody = {
   id?: number;
   name: string;
@@ -33,6 +35,7 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
   try {
     const body: InstructorBody = await req.json();
+    if (!body.name || body.name.trim().length < 3) return NextResponse.json({ error: 'Name is required and must be at least 3 characters' }, { status: 400 });
     const slug = body.slug ? body.slug : slugify(body.name || '');
     const res = await query(
       `INSERT INTO instructors (name, bio, photo, expertise, slug, display_order) VALUES ($1,$2,$3,$4,$5,$6) RETURNING *`,
@@ -49,6 +52,7 @@ export async function PUT(req: Request) {
   try {
     const body: InstructorBody = await req.json();
     if (!body.id) return NextResponse.json({ error: 'Missing id' }, { status: 400 });
+    if (body.name && body.name.trim().length < 3) return NextResponse.json({ error: 'Name must be at least 3 characters' }, { status: 400 });
     const slug = body.slug ? body.slug : slugify(body.name || '');
     const res = await query(
       `UPDATE instructors SET name=$1, bio=$2, photo=$3, expertise=$4, slug=$5, display_order=$6 WHERE id=$7 RETURNING *`,

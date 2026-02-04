@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { query } from '@/lib/db';
 import { slugify } from '@/lib/slugify';
 
+export const runtime = 'nodejs';
+
 type EventBody = {
   id?: number;
   title: string;
@@ -48,6 +50,8 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
   try {
     const body: EventBody = await req.json();
+    if (!body.title || body.title.trim().length < 3) return NextResponse.json({ error: 'Title is required and must be at least 3 characters' }, { status: 400 });
+    if (body.start_date && isNaN(Date.parse(body.start_date))) return NextResponse.json({ error: 'start_date must be a valid ISO date' }, { status: 400 });
     const slug = body.slug ? body.slug : slugify(body.title || '');
     const res = await query(
       `INSERT INTO events (title, description, event_type, start_date, end_date, location, poster_image, slug, status) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,'published') RETURNING *`,
@@ -64,6 +68,8 @@ export async function PUT(req: Request) {
   try {
     const body: EventBody = await req.json();
     if (!body.id) return NextResponse.json({ error: 'Missing id' }, { status: 400 });
+    if (body.title && body.title.trim().length < 3) return NextResponse.json({ error: 'Title must be at least 3 characters' }, { status: 400 });
+    if (body.start_date && isNaN(Date.parse(body.start_date))) return NextResponse.json({ error: 'start_date must be a valid ISO date' }, { status: 400 });
     // preserve existing values when fields are not provided
     const existing = await query('SELECT * FROM events WHERE id=$1 LIMIT 1', [body.id]);
     if (existing.rows.length === 0) return NextResponse.json({ error: 'Not found' }, { status: 404 });
