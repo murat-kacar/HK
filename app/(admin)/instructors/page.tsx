@@ -24,14 +24,24 @@ export default function AdminInstructorsPage() {
       setErrors('İsim en az 3 karakter olmalıdır.');
       return;
     }
-    await fetch('/api/instructors', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(form) });
+    const res = await fetch('/api/instructors', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(form) });
+    const j = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      setErrors(j.error || 'Sunucu hatası');
+      return;
+    }
     setForm({ name: '', expertise: '' });
     load();
   };
 
   const handleDelete = async (id: number) => {
     if (!confirm('Silmek istiyor musunuz?')) return;
-    await fetch('/api/instructors', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id }) });
+    const res = await fetch('/api/instructors', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id }) });
+    const j = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      setErrors(j.error || 'Sunucu hatası');
+      return;
+    }
     load();
   };
 

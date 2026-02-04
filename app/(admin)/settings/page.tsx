@@ -33,8 +33,13 @@ export default function AdminSettingsPage() {
     }
 
     setLoading(true);
-    await fetch('/api/site-settings', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(form) });
+    const res = await fetch('/api/site-settings', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(form) });
+    const j = await res.json().catch(() => ({}));
     setLoading(false);
+    if (!res.ok) {
+      setErrors(j.error || 'Sunucu hatası');
+      return;
+    }
     alert('Kaydedildi');
   };
 

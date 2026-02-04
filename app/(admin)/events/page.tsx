@@ -34,14 +34,24 @@ export default function AdminEventsPage() {
       return;
     }
     setErrors(null);
-    await fetch('/api/events', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(form) });
+    const res = await fetch('/api/events', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(form) });
+    const j = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      setErrors(j.error || 'Sunucu hatası');
+      return;
+    }
     setForm({ title: '', event_type: '', start_date: '' });
     load();
   };
 
   const handleDelete = async (id: number) => {
     if (!confirm('Silmek istiyor musunuz?')) return;
-    await fetch('/api/events', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id }) });
+    const res = await fetch('/api/events', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id }) });
+    const j = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      setErrors(j.error || 'Sunucu hatası');
+      return;
+    }
     load();
   };
 
