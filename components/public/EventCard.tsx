@@ -1,3 +1,4 @@
+"use client";
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -18,8 +19,9 @@ interface Props {
 export function EventCard({ slug, title, poster_image = '/assets/images/placeholder.jpg', event_type, start_date, location }: Props) {
   return (
     <Link href={`/etkinlikler/${slug}`} className="block">
-      <motion.div whileHover={{ scale: 1.02 }} className="cursor-pointer">
-        <Card>
+      <motion.div whileHover={{ scale: 1.02 }}>
+        <div className="cursor-pointer">
+          <Card>
           <AspectRatio ratio={2 / 3}>
             <Image src={poster_image} alt={title} fill className="object-cover" sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw" />
             {event_type && <Badge className="absolute top-2 right-2 bg-black/70 text-white">{event_type}</Badge>}
@@ -29,7 +31,8 @@ export function EventCard({ slug, title, poster_image = '/assets/images/placehol
             <p className="text-sm text-muted-foreground">{start_date}</p>
             {location && <p className="text-sm text-muted-foreground">{location}</p>}
           </CardContent>
-        </Card>
+          </Card>
+        </div>
       </motion.div>
     </Link>
   );

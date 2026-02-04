@@ -45,13 +45,15 @@ export default function HeroCarousel() {
       <Swiper spaceBetween={10} slidesPerView={1} autoplay={{ delay: 4000 }} pagination={{ clickable: true }}>
         {items.map((it) => (
           <SwiperSlide key={it.id}>
-            <motion.div whileHover={{ scale: 1.02 }} className="rounded-lg overflow-hidden">
-              <Card>
-                <div className="relative h-56 md:h-80">
-                  <Image src={it.poster_image || '/assets/images/placeholder.jpg'} alt={it.title} fill className="object-cover" />
-                  <div className="absolute bottom-3 left-3 bg-black/60 text-white px-3 py-2 rounded">{it.title}</div>
-                </div>
-              </Card>
+            <motion.div whileHover={{ scale: 1.02 }}>
+              <div className="rounded-lg overflow-hidden">
+                <Card>
+                  <div className="relative h-56 md:h-80">
+                    <Image src={it.poster_image || '/assets/images/placeholder.jpg'} alt={it.title} fill className="object-cover" />
+                    <div className="absolute bottom-3 left-3 bg-black/60 text-white px-3 py-2 rounded">{it.title}</div>
+                  </div>
+                </Card>
+              </div>
             </motion.div>
           </SwiperSlide>
         ))}

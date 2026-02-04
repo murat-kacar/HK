@@ -1,3 +1,4 @@
+"use client";
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -14,8 +15,9 @@ interface Props {
 export default function InstructorCard({ name, photo = '/assets/images/avatar-placeholder.png', expertise, slug }: Props) {
   return (
     <Link href={slug ? `/egitmenler/${slug}` : '#'}>
-      <motion.div whileHover={{ translateY: -4 }} className="cursor-pointer">
-        <Card className="text-center p-4">
+      <motion.div whileHover={{ translateY: -4 }}>
+        <div className="cursor-pointer">
+          <Card className="text-center p-4">
           <div className="mx-auto w-24 h-24 relative rounded-full overflow-hidden mb-3">
             <Image src={photo} alt={name} fill className="object-cover" />
           </div>
@@ -23,7 +25,8 @@ export default function InstructorCard({ name, photo = '/assets/images/avatar-pl
             <div className="font-medium">{name}</div>
             {expertise && <div className="text-sm text-muted">{expertise}</div>}
           </CardContent>
-        </Card>
+          </Card>
+        </div>
       </motion.div>
     </Link>
   );
