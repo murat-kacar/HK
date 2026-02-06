@@ -11,9 +11,7 @@ npm-debug.log
 .cache
 coverage
 dist
-Dockerfile
-docker-compose.yml
-.dockerignore
+# Docker artifacts removed from project
 nginx.conf
 public/assets
 tmp/*.txt

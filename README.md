@@ -29,15 +29,10 @@ psql "$DATABASE_URL" -f scripts/init-db.sql
 npm run dev
 ```
 
-Docker:
-
-```bash
-docker compose up --build
-```
-
 What's included:
 - `package.json` — dependencies and scripts
-- `docker-compose.yml`, `Dockerfile`, `.dockerignore`
+- `scripts/init-db.sql` — DB schema and initial page meta/settings
+- `lib/` — `db.ts`, `auth.ts`, `slugify.ts` helpers
 - `scripts/init-db.sql` — DB schema and initial page meta/settings
 - `lib/` — `db.ts`, `auth.ts`, `slugify.ts` helpers
 
